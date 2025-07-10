@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verificación de Identidad</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f6fa;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #003366;
+      color: white;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: 40px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    video {
+      width: 100%;
+      border-radius: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      background-color: #0073e6;
+      color: white;
+      border: none;
+      padding: 15px 25px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
+    }
+
+    #mensaje {
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 30px;
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Verificación de Identidad</h1>
+    <p>Escaneo facial y huella digital</p>
+  </header>
+
+  <div class="container">
+    <p>Por favor, siga los pasos para verificar su identidad.</p>
+
+    <!-- Botón para activar la cámara -->
+    <button onclick="iniciarCamara()">Iniciar verificación de rostro</button>
+    <video id="video" autoplay playsinline></video>
+    <br>
+    <button id="btnRostro" onclick="verificarRostro()">Verificar rostro</button>
+    <br>
+    <button id="btnHuella" onclick="simularHuella()" disabled>Verificar con huella</button>
+
+    <div id="mensaje"></div>
+  </div>
+
+  <footer>
+    © 2025 Verificación Biométrica. Todos los derechos reservados.
+  </footer>
+
+  <script>
+    let video = document.getElementById("video");
+    let btnHuella = document.getElementById("btnHuella");
+
+    function iniciarCamara() {
+      navigator.mediaDevices.getUserMedia({ video: true })
+        .then(stream => {
+          video.srcObject = stream;
+        })
+        .catch(err => {
+          alert("No se pudo acceder a la cámara. Por favor otorga permisos.");
+          console.error(err);
+        });
+    }
+
+    function verificarRostro() {
+      document.getElementById("mensaje").innerText = "✅ Rostro verificado correctamente.";
+      btnHuella.disabled = false;
+    }
+
+    function simularHuella() {
+      const mensaje = document.getElementById("mensaje");
+      mensaje.innerText = "Por favor, pon tu huella sobre el lector...";
+
+      setTimeout(() => {
+        mensaje.innerText = "✅ Huella tomada exitosamente. Identidad verificada.";
+        console.log("Huella 'simulada' registrada.");
+      }, 3000);
+    }
+  </script>
+
+</body>
+</html>
