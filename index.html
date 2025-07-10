@@ -2,15 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Verificación de Identidad</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Verificación de Identidad - Visa</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f3f6fa;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      background-color: #f4f8fc;
       margin: 0;
       padding: 0;
+      text-align: center;
     }
 
     header {
@@ -19,104 +19,128 @@
       padding: 20px;
     }
 
-    .container {
-      max-width: 500px;
-      margin: 40px auto;
-      background: white;
-      padding: 30px;
+    .aviso-inicial {
+      background-color: #e6f2ff;
+      border: 2px solid #0073e6;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 30px auto 20px auto;
+      max-width: 600px;
+      color: #003366;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .aviso-inicial h2 {
+      margin-bottom: 10px;
+    }
+
+    .section {
+      margin: 20px;
+      padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      background-color: #ffffff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
     video {
       width: 100%;
+      max-width: 400px;
       border-radius: 10px;
-      margin-top: 20px;
+      margin-bottom: 10px;
     }
 
     button {
+      padding: 12px 20px;
+      font-size: 16px;
+      margin: 10px;
+      border: none;
+      border-radius: 6px;
       background-color: #0073e6;
       color: white;
-      border: none;
-      padding: 15px 25px;
-      font-size: 16px;
-      border-radius: 8px;
       cursor: pointer;
-      margin-top: 15px;
     }
 
-    button:disabled {
-      background-color: #ccc;
-      cursor: not-allowed;
+    button:hover {
+      background-color: #005bb5;
     }
 
-    #mensaje {
-      margin-top: 20px;
+    #resultado {
       font-weight: bold;
+      color: green;
+      margin-top: 10px;
     }
 
     footer {
-      margin-top: 30px;
-      font-size: 12px;
-      color: #777;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #888;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Verificación de Identidad</h1>
-    <p>Escaneo facial y huella digital</p>
+    <h1>Verificación Biométrica para Solicitud de Visa</h1>
   </header>
 
-  <div class="container">
-    <p>Por favor, siga los pasos para verificar su identidad.</p>
+  <div class="aviso-inicial">
+    <h2>Bienvenido al sistema de verificación de datos para su solicitud de visa</h2>
+    <p>
+      Este proceso forma parte del protocolo de seguridad y validación de identidad exigido para solicitudes consulares.
+      Por favor, asegúrese de seguir cada paso con atención. Su información será tratada con estricta confidencialidad.
+    </p>
+  </div>
 
-    <!-- Botón para activar la cámara -->
-    <button onclick="iniciarCamara()">Iniciar verificación de rostro</button>
-    <video id="video" autoplay playsinline></video>
-    <br>
-    <button id="btnRostro" onclick="verificarRostro()">Verificar rostro</button>
-    <br>
-    <button id="btnHuella" onclick="simularHuella()" disabled>Verificar con huella</button>
+  <div class="section" id="face-section">
+    <h2>1. Escaneo Facial</h2>
+    <p>Presione el botón y permita el acceso a su cámara para comenzar con la verificación facial.</p>
+    <video id="video" autoplay playsinline></video><br />
+    <button onclick="iniciarCamara()">Iniciar cámara</button>
+    <button onclick="verificarRostro()">Verificar rostro</button>
+    <p id="resultado"></p>
+  </div>
 
-    <div id="mensaje"></div>
+  <div class="section" id="finger-section" style="display:none;">
+    <h2>2. Verificación de Huella Digital</h2>
+    <p>Presione el botón y coloque su dedo suavemente sobre la pantalla.</p>
+    <button onclick="simularHuella()">Verificar con huella</button>
+    <p id="mensajeHuella"></p>
   </div>
 
   <footer>
-    © 2025 Verificación Biométrica. Todos los derechos reservados.
+    © 2025 Verificación Segura. Todos los derechos reservados.
   </footer>
 
   <script>
-    let video = document.getElementById("video");
-    let btnHuella = document.getElementById("btnHuella");
+    const video = document.getElementById('video');
+    const resultado = document.getElementById('resultado');
+    const mensajeHuella = document.getElementById('mensajeHuella');
+    const fingerSection = document.getElementById('finger-section');
 
     function iniciarCamara() {
       navigator.mediaDevices.getUserMedia({ video: true })
         .then(stream => {
           video.srcObject = stream;
+          resultado.textContent = 'Cámara activada. Posicione su rostro en el recuadro.';
         })
         .catch(err => {
-          alert("No se pudo acceder a la cámara. Por favor otorga permisos.");
-          console.error(err);
+          resultado.textContent = 'Error: No se pudo acceder a la cámara.';
         });
     }
 
     function verificarRostro() {
-      document.getElementById("mensaje").innerText = "✅ Rostro verificado correctamente.";
-      btnHuella.disabled = false;
+      resultado.textContent = 'Rostro verificado correctamente.';
+      fingerSection.style.display = 'block';
     }
 
     function simularHuella() {
-      const mensaje = document.getElementById("mensaje");
-      mensaje.innerText = "Por favor, pon tu huella sobre el lector...";
-
+      mensajeHuella.textContent = 'Escaneando huella...';
       setTimeout(() => {
-        mensaje.innerText = "✅ Huella tomada exitosamente. Identidad verificada.";
-        console.log("Huella 'simulada' registrada.");
-      }, 3000);
+        mensajeHuella.textContent = '✅ Huella tomada exitosamente. Gracias por verificar su identidad.';
+      }, 2000);
     }
   </script>
-
 </body>
 </html>
